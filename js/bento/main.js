@@ -2,7 +2,7 @@
 // 權限與狀態追蹤
 // ============================================
 // 學長請將這裡換成您指定的管理員 Email
-const ADMIN_EMAILS = ['admin@example.com', 'your_email@gmail.com']; 
+const ADMIN_EMAILS = ['alansnoopy@example.com', 'alansnoopy@gmail.com']; 
 let currentCloudDocId = null; // 紀錄目前正在編輯的雲端作品 ID，若為 null 代表是新建
 
 // 判斷權限的輔助函式
