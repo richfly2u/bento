@@ -6,16 +6,17 @@
     <title>🍱 大廚 3D 擺盤組合大師</title>
     
     <link rel="stylesheet" href="css/bento-main.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <script type="module">
-    // 引入剛才搬家的模組
+    <script src="js/bento/ui.js"></script>
+    <script src="js/bento/main.js"></script>
+
+<script type="module">
     import { initFirebaseWindow, listenToAuth } from './js/core/auth.js';
 
-    // 啟動視窗工具掛載
+    // 啟動 Firebase 工具，把資料庫掛載上去，這樣上面的 main.js 就能順利抓到雲端資料
     initFirebaseWindow();
 
-    // 啟動登入監聽
+    // 啟動登入監聽 (會員大門)
     listenToAuth((user) => {
         const loginBtn = document.getElementById('login-btn');
         const panel = document.getElementById('email-login-panel');
@@ -30,7 +31,6 @@
         }
     });
 </script>
-<script src="js/bento/ui.js"></script>
 
 </head>
 <body>
