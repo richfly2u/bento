@@ -1,0 +1,319 @@
+/**
+ * 食材樣式 - Ingredients Styles
+ */
+
+/* ====================
+   食材庫容器
+   ==================== */
+
+.ingredient-library {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ingredient-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* ====================
+   分類標籤
+   ==================== */
+
+.category-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-tab:hover {
+    background: var(--background-color);
+    border-color: var(--text-light);
+}
+
+.category-tab.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.category-tab .icon {
+    font-size: 1rem;
+}
+
+/* ====================
+   食材卡片
+   ==================== */
+
+.ingredient-card {
+    background: var(--surface-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: all 0.2s ease;
+    cursor: grab;
+}
+
+.ingredient-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.ingredient-card.dragging {
+    cursor: grabbing;
+    opacity: 0.5;
+}
+
+.ingredient-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.ingredient-info {
+    padding: 12px;
+}
+
+.ingredient-name {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ingredient-category {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* ====================
+   食材網格
+   ==================== */
+
+.ingredient-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+/* ====================
+   AI 生成區域
+   ==================== */
+
+.ai-generation-panel {
+    background: var(--surface-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.ai-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.ai-panel-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.ai-api-key-section {
+    margin-bottom: 16px;
+}
+
+.api-key-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.api-key-input-group input {
+    flex: 1;
+}
+
+.api-key-hint {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.api-key-hint a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.api-key-hint a:hover {
+    text-decoration: underline;
+}
+
+/* ====================
+   AI 生成輸入
+   ==================== */
+
+.ai-input-section {
+    margin-bottom: 16px;
+}
+
+.ai-ingredient-input {
+    margin-bottom: 12px;
+}
+
+.ai-generate-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary-color), #ff8e8e);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ai-generate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.ai-generate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ====================
+   AI 預覽區域
+   ==================== */
+
+#ai-preview-container {
+    min-height: 200px;
+    border-radius: var(--radius-md);
+    background: var(--background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.ingredient-preview {
+    text-align: center;
+}
+
+.ingredient-preview img {
+    max-width: 200px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 12px;
+}
+
+.ingredient-preview p {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* ====================
+   分類選擇器
+   ==================== */
+
+.category-select {
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--surface-color);
+    cursor: pointer;
+}
+
+/* ====================
+   食材操作選單
+   ==================== */
+
+#ingredient-actions-menu {
+    position: absolute;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 8px;
+    z-index: 100;
+    min-width: 150px;
+}
+
+.action-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.action-menu-item:hover {
+    background: var(--background-color);
+}
+
+/* ====================
+   批量操作
+   ==================== */
+
+.batch-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+/* ====================
+   空白狀態
+   ==================== */
+
+.empty-ingredients {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-light);
+}
+
+.empty-ingredients .icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.3;
+}
+
+/* ====================
+   載入狀態
+   ==================== */
+
+.ingredient-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px;
+}
+
+.skeleton-card {
+    width: 120px;
+    height: 140px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
