@@ -2,336 +2,244 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍱 大廚 3D 擺盤組合大師</title>
+    <meta name="description" content="AI 智慧便當擺盤設計工具 - 輕鬆創造美觀的便當擺盤">
     
-    <link rel="stylesheet" href="css/bento-style.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./assets/favicon.png">
     
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- 主要樣式 -->
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/bento-grid.css">
+    <link rel="stylesheet" href="./css/ingredients.css">
+    <link rel="stylesheet" href="./css/modals.css">
+    <link rel="stylesheet" href="./css/responsive.css">
 </head>
 <body>
-
-<div class="header">
-    <h1 style="margin:0">🍱 3D 組合大師</h1>
-    
-    <div style="display:flex; gap:8px; align-items:center;" class="normal-tools">
-        <button class="btn auth-required" style="background:var(--gold); color:white; border:none; padding:6px 10px; font-size:12px;" onclick="checkAuthAndRun(function(){ window.open('extractor.html', '_blank'); })">✂️ 擷取實驗室</button>
-        <button id="login-btn" class="btn" style="background:var(--blue); color:white; border:none; padding:6px 12px; font-size:12px;" onclick="handleAuthClick()">🔑 會員登入</button>
-    </div>
+    <div class="app-container">
+        <!-- 頁首 -->
+        <header class="app-header">
+            <div class="header-title">
+                🍱 大廚 3D 擺盤組合大師
+            </div>
+            <div class="header-actions">
+                <button id="save-work-btn" class="btn btn-primary" title="💾 儲存作品">
+                    💾 儲存作品
+                </button>
+                <button id="export-image-btn" class="btn btn-secondary" title="📸 匯出圖片">
+                    📸 匯出圖片
+                </button>
+                <button id="gallery-btn" class="btn btn-outline" title="📂 瀏覽作品">
+                    📂 圖庫
+                </button>
+            </div>
+        </header>
         
-    <div id="email-login-panel" style="display:none; position:fixed; top:75px; right:20px; background:rgba(18, 20, 28, 0.92); backdrop-filter:blur(10px); padding:25px; border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,0.6); z-index:10000; border:1px solid #2d3340; border-top:4px solid var(--gold); width:300px; font-family: sans-serif; color:#e0e6ed;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h4 style="margin:0; color:var(--gold); font-size:1.1rem; letter-spacing:1px;">🔒 會員中心</h4>
-            <button onclick="document.getElementById('email-login-panel').style.display='none'" style="background:none; border:none; cursor:pointer; font-size:24px; color:#666;">&times;</button>
-        </div>
-        
-        <input type="email" id="auth-email" placeholder="您的 Email" style="width:100%; padding:12px; margin-bottom:12px; border:1px solid #333; border-radius:8px; box-sizing:border-box; background:#12141c; color:white; outline:none; font-size:14px;">
-        <input type="password" id="auth-password" placeholder="密碼 (至少6位)" style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #333; border-radius:8px; box-sizing:border-box; background:#12141c; color:white; outline:none; font-size:14px;">
-        
-        <div style="display:flex; gap:10px; margin-bottom:20px;">
-            <button class="btn" style="flex:1; background:var(--blue); color:white; padding:12px; border-radius:8px; border:none; cursor:pointer; font-weight:bold; transition:0.3s;" onclick="handleEmailAuth('login')">登入</button>
-            <button class="btn" style="flex:1; background:transparent; border:1px solid var(--gold); color:var(--gold); padding:12px; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.3s;" onclick="handleEmailAuth('register')">註冊</button>
-        </div>
-        
-        <div style="border-top:1px solid #333; padding-top:20px; text-align:center;">
-            <button class="btn" style="width:100%; background:#fff; border:none; color:#333; padding:10px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:bold; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="window.loginWithGoogle()">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="16"> Google 帳號登入
-            </button>
-        </div>
-    </div>
-
-    <div style="display:flex; gap:8px;" class="design-tools">
-        <span style="font-size:13px; font-weight:bold; color:var(--gold);">📐 設計實體便當盒</span>
-    </div>
-</div>
-
-<div class="main">
-    <main class="workspace">
-       <div class="toolbar normal-tools" style="justify-content: center; gap: 15px;">
-    <button class="btn btn-main auth-required" style="flex:1; max-width: 200px;" onclick="checkAuthAndRun(initSavePlatedBento)">💾 儲存擺盤作品</button>
-    <button class="btn btn-main auth-required" style="background:var(--wood); flex:1; max-width: 200px;" onclick="checkAuthAndRun(exportFinal)">📸 匯出圖片</button>
-    <button class="btn btn-main" style="background:#fff5f5; border:2px solid var(--vermillion); color:var(--vermillion); flex:1; max-width: 200px;" onclick="openCloudGallery('combinations')">📂 瀏覽擺盤作品</button>
-</div>
-        
-        <div class="toolbar design-tools" style="background: #fff8eb; border-bottom: 2px solid var(--gold);">
-            <span style="font-weight:bold; font-size:13px;">便當外框：</span>
-            寬 <input type="number" id="boxW" value="550" style="width:60px; padding:5px; border-radius:4px; border:1px solid #ccc;" onchange="updateBoxSize()"> px
-            ×
-            高 <input type="number" id="boxH" value="360" style="width:60px; padding:5px; border-radius:4px; border:1px solid #ccc;" onchange="updateBoxSize()"> px
-            <button class="btn" style="background:#fff; border:1px solid var(--gold); color:var(--gold); padding:5px 8px; font-size:12px; margin-left:5px;" onclick="resetStandardSize()">↺ 標準尺寸</button>
-            <div style="width:1px; height:20px; background:#ccc; margin:0 10px;"></div>
-            <button class="btn" style="background:white; border:2px solid var(--blue); color:var(--blue);" onclick="addNewSlot()">➕ 新增一格</button>
-            <div style="flex:1"></div>
-            <button class="btn" style="background:#666; color:white;" onclick="toggleDesignMode()">❌ 結束設計</button>
-            <button class="btn btn-main" style="background:var(--gold);" onclick="saveCustomTemplate()">💾 儲存實體模板</button>
-        </div>
-
-        <div class="floating-tools normal-tools">
-            <button onclick="undo()" title="復原上一動">
-                <span class="icon">⏪</span>
-                <span class="txt">復原</span>
-            </button>
-            <button onclick="redo()" title="重做下一動" class="redo-btn">
-                <span class="icon">⏩</span>
-                <span class="txt">重做</span>
-            </button>
-            <button class="btn-clear" onclick="clearBento()" title="清空畫面上所有食材">
-                <span class="icon">🗑️</span>
-                <span class="txt">清空</span>
-            </button>
-            <button id="snapToggleBtn" onclick="toggleSnap()" title="切換吸附格子開/關" style="background: rgba(255,255,255,0.9); border: 2px solid #4CAF50; color: #4CAF50;">
-                <span class="icon">🧲</span>
-                <span class="txt">吸附</span>
-            </button>
-        </div>
-
-        <div class="canvas-container" id="workspaceContainer">
-            <div id="scaleWrapper" style="width:100%; text-align:center;">
-                <div class="bento-outer" id="shotArea">
-                    <div id="drawCanvasWrapper" style="width: 550px; height: 360px;">
-                        <div id="drawCanvas"></div>
-                        <div id="bentoResizer" class="bento-resizer" title="拖曳縮放便當盒">⤡</div>
+        <!-- 主內容區 -->
+        <div class="main-content">
+            <!-- 側邊欄 -->
+            <aside class="sidebar">
+                <!-- 便當外框設計 -->
+                <section class="sidebar-section">
+                    <h3 class="sidebar-title">🔲 便當外框設計</h3>
+                    <div class="design-mode-controls">
+                        <div class="grid-size-inputs">
+                            <label>寬</label>
+                            <input type="number" id="grid-width" value="3" min="1" max="10">
+                            <span>×</span>
+                            <label>高</label>
+                            <input type="number" id="grid-height" value="3" min="1" max="10">
+                        </div>
+                        <button id="standard-size-btn" class="btn btn-outline btn-icon" title="↺ 標準尺寸">
+                            ↺
+                        </button>
+                    </div>
+                    <div class="batch-actions">
+                        <button id="add-cell-btn" class="btn btn-outline" style="width: 100%">
+                            ➕ 新增一格
+                        </button>
+                        <button id="end-design-btn" class="btn btn-outline" style="width: 100%">
+                            ❌ 結束設計
+                        </button>
+                        <button id="save-template-btn" class="btn btn-outline" style="width: 100%">
+                            💾 儲存實體模板
+                        </button>
+                    </div>
+                </section>
+                
+                <div class="divider"></div>
+                
+                <!-- 工具列 -->
+                <section class="sidebar-section">
+                    <h3 class="sidebar-title">🛠️ 工具</h3>
+                    <div class="flex gap-8">
+                        <button id="undo-btn" class="btn btn-icon" title="⏪ 復原">
+                            ⏪
+                        </button>
+                        <button id="redo-btn" class="btn btn-icon" title="⏩ 重做">
+                            ⏩
+                        </button>
+                        <button id="clear-btn" class="btn btn-icon" title="🗑️ 清空">
+                            🗑️
+                        </button>
+                        <button id="magnet-btn" class="btn btn-icon" title="🧲 吸附">
+                            🧲
+                        </button>
+                    </div>
+                </section>
+                
+                <div class="divider"></div>
+                
+                <!-- 食材管理 -->
+                <section class="sidebar-section">
+                    <h3 class="sidebar-title">🥘 食材管理</h3>
+                    <div id="ingredient-categories" class="ingredient-categories">
+                        <!-- 由 JavaScript 動態生成 -->
+                    </div>
+                    <div id="ingredient-library" class="ingredient-library">
+                        <div class="ingredient-grid" id="ingredient-grid">
+                            <!-- 食材卡片由 JavaScript 動態生成 -->
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="divider"></div>
+                
+                <!-- AI 智慧生成 -->
+                <section class="sidebar-section">
+                    <div class="ai-generation-panel">
+                        <div class="ai-panel-header">
+                            <span>✨ AI 智慧生成食材</span>
+                        </div>
+                        
+                        <div class="ai-api-key-section">
+                            <div class="api-key-hint">
+                                🔑 首次使用需輸入 Gemini API Key<br>
+                                免費取得：<a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a>
+                            </div>
+                            <div class="api-key-input-group">
+                                <input type="password" id="gemini-api-key" placeholder="輸入 API Key">
+                                <button id="save-api-key-btn" class="btn btn-primary">💾</button>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-input-section">
+                            <input 
+                                type="text" 
+                                id="ai-ingredient-input" 
+                                class="ai-ingredient-input"
+                                placeholder="輸入食材名稱（例如：炒青江菜、紅燒豆腐）"
+                            >
+                            <button id="ai-generate-btn" class="ai-generate-btn">
+                                ✨ 生成
+                            </button>
+                        </div>
+                        
+                        <div id="ai-preview-container">
+                            <div class="empty-state">
+                                <p style="color: var(--text-light); font-size: 0.875rem;">
+                                    ✨ 點擊生成後會在此顯示
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+            
+            <!-- 主工作區 -->
+            <main class="workspace">
+                <!-- 工具列 -->
+                <div class="toolbar">
+                    <button class="btn btn-icon tooltip" data-tooltip="復原 (Ctrl+Z)" id="toolbar-undo">
+                        ↩️
+                    </button>
+                    <button class="btn btn-icon tooltip" data-tooltip="重做 (Ctrl+Shift+Z)" id="toolbar-redo">
+                        ↪️
+                    </button>
+                    <div class="divider-vertical"></div>
+                    <button class="btn btn-icon tooltip" data-tooltip="旋轉" id="toolbar-rotate">
+                        ↻
+                    </button>
+                    <button class="btn btn-icon tooltip" data-tooltip="翻轉" id="toolbar-flip">
+                        ↔️
+                    </button>
+                    <div class="divider-vertical"></div>
+                    <span id="selected-ingredient-info" style="font-size: 0.875rem; color: var(--text-light);">
+                        選擇格子以查看食材資訊
+                    </span>
+                </div>
+                
+                <!-- Canvas 區域 -->
+                <div class="canvas-area">
+                    <div id="bento-grid-container">
+                        <!-- 網格由 JavaScript 動態生成 -->
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
-    </main>
-
-    <aside class="sidebar">
-       <div class="category-header">
-            <div id="lib-floating-tools">
-                <input type="file" id="imgIn" accept="image/png, image/webp, image/jpeg" multiple hidden onchange="batchAdd(this)">
-                <button id="lib-fab" onclick="toggleLibMenu()" title="工具選單">
-                    <span id="lib-fab-icon">⚙️</span>
-                </button>
-                <div id="lib-menu" class="lib-menu-popup">
-                    <div class="lib-menu-item" data-tip="匯入圖片" onclick="document.getElementById('imgIn').click(); toggleLibMenu()">📥<span>匯入圖片</span></div>
-                    <div class="lib-menu-item" data-tip="新增分類" onclick="promptAddCategory(); toggleLibMenu()">➕<span>新增分類</span></div>
-                    <div class="lib-menu-item" data-tip="編輯食材" id="libEditBtn" onclick="toggleLibEditMode()">✏️<span>編輯食材</span></div>
-                    <div class="lib-menu-item lib-menu-del" data-tip="批量刪除" id="libBatchBtn" onclick="toggleBatchSelectMode()">☑️<span>批量刪除</span></div>
-                    <div class="lib-menu-item lib-menu-del" data-tip="清空分類" onclick="clearCurrentCategory(); toggleLibMenu()">🗑️<span>清空分類</span></div>
-                    <div class="lib-menu-item" data-tip="AI 生成" onclick="openAiModal(); toggleLibMenu()" style="display:none;">✨<span>AI 生成</span></div>
-                </div>
-            </div>
-            <div class="custom-select-wrapper" id="catSelectWrapper" style="margin-bottom: 0; flex:1;">
-                <div class="custom-select-trigger" onclick="toggleCatSelect()">
-                    <div id="catSelectSelected">🌟 全部</div>
-                    <span style="font-size:10px;">▼</span>
-                </div>
-                <div class="custom-select-options" id="catSelectOptions"></div>
-            </div>
-        </div>
-
-        <div id="loading-indicator">載入食材中，請稍候...</div>
-        <div class="dish-grid" id="libGrid"></div>
-
-        <div id="batch-toolbar">
-            <div id="batch-count-row">
-                <span id="batch-count-label">已選 0 項</span>
-                <button id="batch-select-all-btn" onclick="batchSelectAll()">全選</button>
-            </div>
-            <div id="batch-action-row">
-                <button id="batch-move-btn" onclick="openBatchMoveModal()" disabled>🏷️ 批量換分類</button>
-                <button id="batch-del-btn" onclick="confirmBatchDelete()" disabled>🗑️ 刪除選取</button>
-                <button id="batch-cancel-btn" onclick="exitBatchSelectMode()">✕ 取消</button>
-            </div>
-        </div>
-    </aside>
-
-    <aside class="tpl-sidebar">
-        <h4 style="margin:0 0 5px 0; color:var(--blue); border-bottom: 1px solid #eee; padding-bottom:5px;">✨ 實體便當模板</h4>
-        <div class="custom-select-wrapper" id="customTplWrapper" style="margin-top: 0px; margin-bottom: 10px;flex: none;">
-            <div class="custom-select-trigger" onclick="toggleCustomSelect()">
-                <div id="customTplSelected" style="display:flex; align-items:center; gap:8px;">-- 尚無模板 --</div>
-                <span style="font-size:10px;">▼</span>
-            </div>
-            <div class="custom-select-options" id="customTplOptions"></div>
-        </div>
-        
-        <button class="btn normal-tools" style="background:white; border:2px dashed var(--gold); color:var(--gold); width:100%; margin-bottom: 15px;" onclick="startNewDesign()">🔨 製作新模板</button>
-        <input type="file" id="bgImgIn" accept="image/*" hidden onchange="loadBentoBackground(this)">
-
-       
-
-        <h4 style="margin:15px 0 5px 0; color:var(--blue); border-bottom: 1px solid #eee; padding-bottom:5px;">📷 實體便當照片庫</h4>
-        <button class="btn auth-required" style="background:#e3f2fd; border:2px solid var(--blue); color:var(--blue); width:100%; margin-top:8px; margin-bottom: 8px; font-size: 14px;" onclick="checkAuthAndRun(() => document.getElementById('bentoPhotoUpload').click())">📤 上傳便當照片</button>
-        <button class="btn" style="background:#fff5f5; border:2px solid var(--blue); color:var(--blue); width:100%; margin-bottom: 15px; font-size: 14px;" onclick="openCloudGallery('photos')">📂 瀏覽照片圖庫</button>
-        <input type="file" id="bentoPhotoUpload" accept="image/*" hidden onchange="uploadRealBentoPhoto(this)">
-
-        <div style="display:flex; gap:5px; margin-top:auto; border-top:1px solid #eee; padding-top:15px;">
-            <button class="btn normal-tools" style="flex:1; background:#e8f5e9; border:1px solid #c8e6c9; color:#2e7d32; font-size:11px; padding:8px 0;" onclick="exportDatabase()">📦 備份系統</button>
-            <button class="btn normal-tools" style="flex:1; background:#fff3e0; border:1px solid #ffcc80; color:#e65100; font-size:11px; padding:8px 0;" onclick="document.getElementById('importDbBtn').click()">📥 還原資料</button>
-            <input type="file" id="importDbBtn" accept=".json" hidden onchange="importDatabase(this)">
-        </div>
-        <button class="btn normal-tools" style="background:#e3f2fd; border:1px solid #90caf9; color:var(--blue); width:100%; margin-top:15px; font-size:11px;" onclick="forceRestoreDefaults()">📥 恢復預設食材</button>
-        <button class="btn normal-tools" style="background:#fffaf0; border:1px solid #ffcdd2; color:#d32f2f; width:100%; margin-top:5px; font-size:11px;" onclick="deleteAllDishes()">⚠️ 刪除所有資料</button>
-    </aside>
-</div>
-
-<div id="db-status" style="position:fixed; top:15px; left:50%; transform:translateX(-50%); background:rgba(33, 150, 243, 0.9); color:white; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:bold; z-index:9999; display:none; box-shadow:0 4px 10px rgba(0,0,0,0.3);"></div>
-<div id="globalCtrl" class="global-ctrl"></div>
-
-<div id="custom-confirm" class="popup-box">
-    <span>確定要刪除這道食材嗎？</span>
-    <div class="popup-actions">
-        <button class="btn-yes" onclick="executeDelete()">🗑️ 確定刪除</button>
-        <button class="btn-no" onclick="cancelPopup()">取消</button>
-    </div>
-</div>
-
-<div id="custom-move" class="popup-box">
-    <span>為此食材更換分類：</span>
-    <div class="custom-select-wrapper" id="moveSelectWrapper" style="margin-bottom: 10px;">
-        <div class="custom-select-trigger" onclick="toggleMoveSelect()" style="border-color:var(--gold);">
-            <div id="moveSelectSelected">💡 待分類</div>
-            <span style="font-size:10px;">▼</span>
-        </div>
-        <div class="custom-select-options" id="moveSelectOptions" style="border-color:var(--gold);"></div>
-    </div>
-    <div class="popup-actions">
-        <button class="btn-yes" style="background:var(--gold);" onclick="executeMove()">🏷️ 確定更換</button>
-        <button class="btn-no" onclick="cancelPopup()">取消</button>
-    </div>
-</div>
-
-<div id="batch-move-modal" class="popup-box centered">
-    <div class="bm-header">🏷️ <span id="batch-move-title">批量更換分類</span></div>
-    <div class="bm-body">
-        <div class="bm-label" id="batch-move-label">請選擇目標分類：</div>
-        <div id="batchCatList" style="display:flex; flex-direction:column; gap:6px; max-height:320px; overflow-y:auto; padding-right:4px;"></div>
-    </div>
-    <div class="bm-footer">
-        <button class="bm-cancel" onclick="cancelPopup()">取消</button>
-        <button class="bm-ok" id="batchMoveOkBtn" onclick="executeBatchMove()" disabled>🏷️ 確定移動</button>
-    </div>
-</div>
-
-<div id="overlay"></div>
-
-<div id="summary-modal" class="popup-box centered">
-    <div class="sum-header">🍱 <span>便當菜色摘要</span></div>
-    <div class="sum-body" id="summary-body"></div>
-    <div class="sum-footer">
-        <button class="sum-export" onclick="cancelPopup(); exportFinal();">📸 匯出圖片</button>
-        <button class="sum-btn" onclick="cancelPopup()">✅ 完成</button>
-    </div>
-</div>
-
-<div id="ai-modal" class="popup-box centered">
-    <div class="ai-header">✨ <span>AI 智慧生成食材</span></div>
-    <div class="ai-body">
-        <div id="ai-key-row" style="display:flex;flex-direction:column;gap:6px;background:#f8f0ff;border:1px solid #e0aaff;border-radius:8px;padding:10px;">
-            <div style="font-size:11px;color:#7b2ff7;font-weight:bold;">🔑 首次使用需輸入 Gemini API Key</div>
-            <div style="font-size:10px;color:#999;">免費取得：<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#7b2ff7;">aistudio.google.com</a>（儲存後不需再輸入）</div>
-            <input class="ai-input" id="ai-key-input" type="password" placeholder="貼上你的 Gemini API Key..." autocomplete="off" style="font-size:13px;">
-        </div>
-        <div class="ai-label">輸入食材名稱（例如：炒青江菜、紅燒豆腐、滷蛋）</div>
-        <input class="ai-input" id="ai-input" type="text" placeholder="請輸入食材名稱..." autocomplete="off">
-        <div class="ai-label">預覽</div>
-        <div class="ai-preview" id="ai-preview">✨ 點擊生成後會在此顯示</div>
-        <div class="ai-status" id="ai-status"></div>
-    </div>
-    <div class="ai-footer">
-        <button class="ai-cancel" onclick="cancelPopup()">取消</button>
-        <button style="background:none;border:none;color:#c084fc;font-size:11px;cursor:pointer;padding:4px 8px;" onclick="document.getElementById('ai-key-row').style.display='flex'; document.getElementById('ai-key-input').value=''; document.getElementById('ai-key-input').focus();" title="更換 API Key">🔑</button>
-        <button class="ai-save" id="ai-save-btn" onclick="aiSaveToLib()">💾 存入食材庫</button>
-        <button class="ai-gen-ok" id="ai-gen-ok" onclick="aiGenerate()">✨ 生成</button>
-    </div>
-</div>
-
-<div id="custom-prompt" class="popup-box centered" style="display:none;">
-    <div class="prompt-header"><span id="prompt-icon">✏️</span><span id="prompt-title">請輸入</span></div>
-    <div class="prompt-body">
-        <div class="prompt-label" id="prompt-label"></div>
-        <input class="prompt-input" id="prompt-input" type="text" autocomplete="off">
-        <div class="prompt-label" id="prompt-label2" style="display:none; margin-top:4px;"></div>
-        <input class="prompt-input" id="prompt-input2" type="text" autocomplete="off" style="display:none;">
-    </div>
-    <div class="prompt-footer">
-        <button class="prompt-cancel" onclick="cancelCustomPrompt()">取消</button>
-        <button class="prompt-ok" id="prompt-ok-btn" onclick="confirmCustomPrompt()">✅ 確定</button>
-    </div>
-</div>
-
-<div id="centered-confirm" class="popup-box centered">
-    <span id="centered-msg" style="white-space: pre-wrap;"></span>
-    <div class="popup-actions" style="margin-top: 15px;">
-        <button class="btn-yes" onclick="execCenteredConfirm()">✅ 確定</button>
-        <button class="btn-no" onclick="execCenteredCancel()">取消</button>
-    </div>
-</div>
-
-<div id="save-modal" class="popup-box centered">
-    <span style="font-size:16px;">請確認擺盤作品名稱：</span>
-    <input type="text" id="save-bento-name" style="width: 100%; padding: 10px; margin: 15px 0; border: 2px solid var(--gold); border-radius: 6px; font-size: 14px; font-weight:bold; outline:none;" />
-    <div style="font-size:11px; color:#888; text-align:left; margin-top:-8px; margin-bottom:15px;">(系統已根據格子數與菜色自動為您生成名稱)</div>
-    <div class="popup-actions">
-        <button class="btn-yes" style="background:var(--wood); font-size:14px; padding: 8px 24px;" onclick="confirmSavePlatedBento()">💾 確定儲存</button>
-        <button class="btn-no" onclick="cancelPopup()">取消</button>
-    </div>
-</div>
-
-<div id="gallery-modal" class="popup-box centered">
-    <h3>🍱 我的圖庫</h3>
-    <div id="gallery-grid"></div>
-    <div class="popup-actions" style="margin-top: 25px;">
-        <button class="btn-no" style="font-size:14px; padding: 8px 24px;" onclick="cancelPopup()">關閉圖庫</button>
-    </div>
-</div>
-
-<div id="saving-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999999; justify-content:center; align-items:center; color:white; font-size:20px; font-weight:bold;">
-    📸 正在處理資料，請稍候...
-</div>
-
-<div id="photo-category-modal" class="popup-box centered" style="display:none; position: fixed; z-index: 999999 !important;">
-    <span style="font-size:16px; font-weight:bold; display:block; margin-bottom:10px; color:var(--blue);">🏷️ 請選擇便當分類</span>
-    <select id="photo-category-select" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid var(--gold); border-radius: 8px; font-size: 15px; font-weight:bold; outline:none; background:#fff8eb; color:#333;">
-        <option value="九宮格">🍱 九宮格</option>
-        <option value="方形便當">🔲 方形便當</option>
-        <option value="圓形">⭕ 圓形便當</option>
-    </select>
-    <div class="popup-actions">
-        <button class="btn-yes" id="confirm-photo-upload-btn" style="background:var(--blue); font-size:14px; padding: 8px 24px;">📤 確定上傳</button>
-        <button class="btn-no" onclick="document.getElementById('photo-category-modal').style.display='none'; document.getElementById('overlay').style.display='none';">取消</button>
-    </div>
-</div>
-
-<div id="image-lightbox" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); z-index:10000000; justify-content:center; align-items:center; flex-direction:column;" onclick="if(event.target===this) closeLightbox()">
-    <button onclick="closeLightbox()" style="position:absolute; top:20px; right:30px; background:none; border:none; color:white; font-size:40px; cursor:pointer; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">&times;</button>
-    
-    <div style="position:relative; width:90%; max-width:800px; text-align:center; pointer-events:none; display:flex; justify-content:center;">
-        <img id="lightbox-img" src="" style="min-width: 100%; width: 100%; height: auto; min-height: 40vh; max-height: 75vh; object-fit: contain; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); background: #fff; pointer-events: auto;">
     </div>
     
-    <h3 id="lightbox-title" style="color:var(--gold); margin-top:20px; font-size:22px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px;"></h3>
-    <div id="lightbox-action" style="margin-top: 15px;"></div>
-</div>
-
-<script src="js/bento/ui.js"></script>
-
-<script src="js/bento/main.js"></script>
-
-<script type="module">
-    import { initFirebaseWindow, listenToAuth } from './js/core/auth.js';
-
-    // 啟動 Firebase 工具，把資料庫掛載上去，這樣 main.js 就能順利抓到雲端資料
-    initFirebaseWindow();
-
-    // 啟動登入監聽 (會員大門)
-    listenToAuth((user) => {
-        const loginBtn = document.getElementById('login-btn');
-        const panel = document.getElementById('email-login-panel');
-        if (user) {
-            window.currentUser = user;
-            const displayName = user.displayName || user.email.split('@')[0];
-            if(loginBtn) loginBtn.innerHTML = `👤 ${displayName} (登出)`;
-            if(panel) panel.style.display = 'none'; 
-        } else {
-            window.currentUser = null;
-            if(loginBtn) loginBtn.innerHTML = `🔑 會員登入`;
-        }
-    });
-</script>
-
+    <!-- 食材操作選單 -->
+    <div id="ingredient-actions-menu" class="hidden">
+        <div class="action-menu-item" data-action="change-category">
+            🏷️ 更換分類
+        </div>
+        <div class="action-menu-item" data-action="delete">
+            🗑️ 刪除
+        </div>
+    </div>
+    
+    <!-- Toast 容器 -->
+    <div id="toast-container"></div>
+    
+    <!-- 批量更換分類對話框模板 -->
+    <template id="batch-change-modal-template">
+        <div class="modal-content category-change-modal">
+            <div class="modal-header">
+                <h2>🏷️ 批量更換分類</h2>
+                <button class="btn-close">×</button>
+            </div>
+            <div class="modal-body">
+                <p>請選擇目標分類：</p>
+                <div class="category-options" id="batch-category-options">
+                    <!-- 分類選項由 JS 生成 -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel">取消</button>
+                <button class="btn-confirm">🏷️ 確定移動</button>
+            </div>
+        </div>
+    </template>
+    
+    <!-- 儲存對話框模板 -->
+    <template id="save-dialog-template">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💾 儲存擺盤作品</h2>
+                <button class="btn-close">×</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-message">請確認擺盤作品名稱：</p>
+                <p style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 12px;">
+                    (系統已根據格子數與菜色自動為您生成名稱)
+                </p>
+                <input 
+                    type="text" 
+                    class="modal-input" 
+                    id="save-work-name"
+                    placeholder="作品名稱"
+                >
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel">取消</button>
+                <button class="btn-confirm btn-primary">💾 確定儲存</button>
+            </div>
+        </div>
+    </template>
+    
+    <!-- 主應用程式腳本 -->
+    <script type="module" src="./js/app.js"></script>
 </body>
 </html>
