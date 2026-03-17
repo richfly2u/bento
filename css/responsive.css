@@ -1,0 +1,333 @@
+/**
+ * 響應式樣式 - Responsive Styles
+ */
+
+/* ====================
+   桌面版 (> 1024px)
+   ==================== */
+
+@media (min-width: 1025px) {
+    .app-container {
+        max-width: 1920px;
+        margin: 0 auto;
+    }
+}
+
+/* ====================
+   平板版 (768px - 1024px)
+   ==================== */
+
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+    
+    .sidebar {
+        padding: 12px;
+    }
+    
+    .ingredient-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+/* ====================
+   手機版 (< 768px)
+   ==================== */
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 56px;
+        --toolbar-height: 48px;
+        --sidebar-width: 100%;
+    }
+    
+    /* Header 調整 */
+    .app-header {
+        padding: 0 16px;
+    }
+    
+    .header-title {
+        font-size: 1.25rem;
+    }
+    
+    .header-actions {
+        gap: 8px;
+    }
+    
+    /* 側邊欄改為可收起 */
+    .sidebar {
+        position: fixed;
+        top: var(--header-height);
+        left: -100%;
+        width: 280px;
+        height: calc(100vh - var(--header-height));
+        z-index: 50;
+        transition: left 0.3s ease;
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .sidebar.open {
+        left: 0;
+    }
+    
+    /* 主內容區調整 */
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .workspace {
+        flex: 1;
+    }
+    
+    /* Toolbar 調整 */
+    .toolbar {
+        padding: 0 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .toolbar .btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    /* Canvas 區域調整 */
+    .canvas-area {
+        padding: 12px;
+    }
+    
+    #bento-grid-container {
+        transform: scale(0.9);
+        transform-origin: top center;
+    }
+    
+    /* 按鈕調整 */
+    .btn {
+        padding: 8px 12px;
+        font-size: 0.875rem;
+    }
+    
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    /* 輸入框調整 */
+    input[type="text"],
+    input[type="number"],
+    input[type="password"],
+    textarea,
+    select {
+        font-size: 16px; /* 防止 iPhone 縮放 */
+    }
+    
+    /* 卡片調整 */
+    .card {
+        padding: 12px;
+    }
+    
+    /* 網格系統調整 */
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    /* 彈窗調整 */
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .modal-header {
+        padding: 16px;
+    }
+    
+    .modal-body {
+        padding: 16px;
+    }
+    
+    .modal-footer {
+        padding: 16px;
+    }
+    
+    /* 圖庫調整 */
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 16px;
+    }
+    
+    .gallery-item {
+        border-radius: var(--radius-sm);
+    }
+    
+    /* AI 生成面板調整 */
+    .ai-generation-panel {
+        padding: 16px;
+    }
+    
+    .api-key-input-group {
+        flex-direction: column;
+    }
+    
+    /* 食材網格調整 */
+    .ingredient-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+    
+    .ingredient-info {
+        padding: 8px;
+    }
+    
+    .ingredient-name {
+        font-size: 0.75rem;
+    }
+    
+    /* 分類標籤調整 */
+    .category-tab {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+}
+
+/* ====================
+   小手機版 (< 480px)
+   ==================== */
+
+@media (max-width: 480px) {
+    :root {
+        --header-height: 52px;
+    }
+    
+    .header-title {
+        font-size: 1rem;
+    }
+    
+    .header-title .icon {
+        display: none;
+    }
+    
+    #bento-grid-container {
+        transform: scale(0.75);
+    }
+    
+    .ingredient-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ====================
+   橫向模式
+   ==================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .app-header {
+        height: 48px;
+    }
+    
+    .sidebar {
+        width: 200px;
+    }
+    
+    .modal-content {
+        max-height: 90vh;
+    }
+    
+    .gallery-grid {
+        max-height: 40vh;
+    }
+}
+
+/* ====================
+   觸控優化
+   ==================== */
+
+@media (pointer: coarse) {
+    .btn {
+        min-height: 44px;
+    }
+    
+    .category-tab,
+    .action-menu-item {
+        min-height: 44px;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        min-height: 44px;
+    }
+}
+
+/* ====================
+   減速動畫 ( prefers-reduced-motion )
+   ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ====================
+   深色模式支援 (未來擴充)
+   ==================== */
+
+@media (prefers-color-scheme: dark) {
+    /* 可在此定義深色模式變數 */
+    /*
+    :root {
+        --background-color: #1a1a1a;
+        --surface-color: #2d2d2d;
+        --text-color: #e5e5e5;
+        --text-light: #a0a0a0;
+        --border-color: #404040;
+    }
+    */
+}
+
+/* ====================
+   列印樣式
+   ==================== */
+
+@media print {
+    .app-header,
+    .sidebar,
+    .toolbar,
+    .btn,
+    .modal-overlay {
+        display: none !important;
+    }
+    
+    .workspace {
+        display: block;
+    }
+    
+    .canvas-area {
+        padding: 0;
+        background: white;
+    }
+    
+    #bento-grid-container {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
