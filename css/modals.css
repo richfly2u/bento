@@ -1,0 +1,348 @@
+/**
+ * 彈窗樣式 - Modals Styles
+ */
+
+/* ====================
+   彈窗覆蓋層
+   ==================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ====================
+   彈窗內容
+   ==================== */
+
+.modal-content {
+    background: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.btn-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-close:hover {
+    background: var(--background-color);
+    color: var(--text-color);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+}
+
+.modal-message {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 16px;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-cancel,
+.btn-confirm {
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.btn-cancel:hover {
+    background: var(--background-color);
+}
+
+.btn-confirm {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: #ff5252;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ====================
+   圖庫彈窗
+   ==================== */
+
+.gallery-content {
+    max-width: 800px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.gallery-item {
+    background: var(--background-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.work-preview {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.work-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.work-info {
+    padding: 12px;
+}
+
+.work-info h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.work-date {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.work-actions {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-load,
+.btn-delete {
+    flex: 1;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-load {
+    background: var(--secondary-color);
+    border: none;
+    color: white;
+}
+
+.btn-load:hover {
+    background: #45b7af;
+}
+
+.btn-delete {
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+.btn-delete:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+.empty-message {
+    text-align: center;
+    color: var(--text-light);
+    padding: 40px;
+    grid-column: 1 / -1;
+}
+
+.btn-close-modal {
+    width: 100%;
+    padding: 12px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-close-modal:hover {
+    background: var(--background-color);
+}
+
+/* ====================
+   確認對話框
+   ==================== */
+
+.confirm-modal .modal-content {
+    max-width: 400px;
+}
+
+.confirm-modal .modal-message {
+    font-size: 1.125rem;
+    text-align: center;
+}
+
+/* ====================
+   提示詞彈窗
+   ==================== */
+
+.prompt-modal .modal-input {
+    font-size: 1rem;
+}
+
+/* ====================
+   分類更換彈窗
+   ==================== */
+
+.category-change-modal {
+    min-width: 300px;
+}
+
+.category-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+.category-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-option:hover {
+    background: var(--background-color);
+    border-color: var(--primary-color);
+}
+
+.category-option.selected {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: var(--primary-color);
+}
+
+/* ====================
+    responsive
+   ==================== */
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
