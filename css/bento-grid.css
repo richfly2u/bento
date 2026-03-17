@@ -1,0 +1,219 @@
+/**
+ * 便當網格樣式 - Bento Grid Styles
+ */
+
+/* ====================
+   網格容器
+   ==================== */
+
+#bento-grid-container {
+    position: relative;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 16px;
+    transition: all 0.3s ease;
+}
+
+/* ====================
+   網格單元
+   ==================== */
+
+.bento-cell {
+    position: relative;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bento-cell:hover {
+    border-color: var(--secondary-color);
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+}
+
+.bento-cell.selected {
+    border-color: var(--primary-color);
+    border-style: solid;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+}
+
+.bento-cell.locked {
+    cursor: default;
+    border-style: solid;
+}
+
+.bento-cell.locked:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* 網格單元內的圖片 */
+.bento-cell img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    pointer-events: none;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    transition: transform 0.2s ease;
+}
+
+.bento-cell:hover img {
+    transform: scale(1.05);
+}
+
+/* ====================
+   設計模式控制
+   ==================== */
+
+.design-mode-controls {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: var(--surface-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+}
+
+.grid-size-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grid-size-inputs label {
+    font-size: 0.875rem;
+    color: var(--text-light);
+}
+
+.grid-size-inputs span {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* ====================
+   吸附功能指示
+   ==================== */
+
+.magnet-active .bento-cell {
+    border-color: var(--secondary-color);
+}
+
+.magnet-active .bento-cell img {
+    animation: magnet-pulse 2s infinite;
+}
+
+@keyframes magnet-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+/* ====================
+   空白狀態
+   ==================== */
+
+.bento-cell:empty::before {
+    content: '+';
+    font-size: 2rem;
+    color: var(--text-light);
+    opacity: 0.3;
+}
+
+.bento-cell:hover:empty::before {
+    opacity: 0.6;
+    color: var(--secondary-color);
+}
+
+/* ====================
+   拖曳樣式
+   ==================== */
+
+.bento-cell.drag-over {
+    border-color: var(--primary-color);
+    background: rgba(255, 107, 107, 0.05);
+    transform: scale(1.02);
+}
+
+/* ====================
+   食材放置效果
+   ==================== */
+
+.bento-cell.ingredient-placed {
+    animation: place-success 0.3s ease;
+}
+
+@keyframes place-success {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ====================
+   旋轉控制
+   ==================== */
+
+.rotation-controls {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.bento-cell:hover .rotation-controls {
+    opacity: 1;
+}
+
+.rotation-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: var(--surface-color);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.rotation-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ====================
+    responsive
+   ==================== */
+
+@media (max-width: 768px) {
+    #bento-grid-container {
+        padding: 8px;
+    }
+    
+    .bento-cell {
+        border-width: 1px;
+    }
+    
+    .design-mode-controls {
+        flex-direction: column;
+    }
+}
