@@ -3,82 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 組合大師 - 擷取實驗室</title>
+    <title>3D 擺盤大師 - 專屬雲端廚房</title>
     <link rel="stylesheet" href="css/bento-style.css">
-    <style>
-        .lab-container { padding: 20px; max-width: 1000px; margin: 0 auto; color: #fff; }
-        .upload-zone { border: 2px dashed #d4af37; padding: 30px; text-align: center; border-radius: 15px; background: rgba(0,0,0,0.5); margin-bottom: 20px; }
-        .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
-        .food-card { background: #333; padding: 10px; border-radius: 8px; border: 1px solid #444; text-align: center; }
-        .food-card img { max-width: 100%; height: 100px; object-fit: contain; }
-        .btn-lab { background: #d4af37; color: #000; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bento-body">
-    <div class="lab-container">
-        <header style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>🧪 擷取實驗室 <small style="font-size: 0.5em; color: #aaa;">食材備料中心</small></h2>
-            <button class="btn-lab" onclick="location.href='index.html'">⬅️ 回到擺盤大師</button>
-        </header>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #1e222d; border-bottom: 1px solid #2d3340;">
+        <h2 style="color: #D4A843; margin: 0;">🍱 3D 擺盤大師</h2>
 
-        <div class="upload-zone" id="dropZone">
-            <h3>拖曳食材照片到此處</h3>
-            <p>或</p>
-            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
-            <button class="btn-lab" onclick="document.getElementById('fileInput').click()">選擇照片</button>
-            <p style="font-size: 0.8em; color: #888; margin-top: 10px;">支援自動去背技術 (PNG 格式輸出)</p>
+        <div style="display:flex; gap:8px; align-items:center;" class="normal-tools">
+            <button class="btn auth-required" style="background:var(--gold); color:white; border:none; padding:6px 10px; font-size:12px;" onclick="checkAuthAndRun(function(){ window.open('extractor.html', '_blank'); })">✂️ 擷取實驗室</button>
+            <button id="login-btn" class="btn" style="background:var(--blue); color:white; border:none; padding:6px 12px; font-size:12px;" onclick="handleAuthClick()">🔑 會員登入</button>
         </div>
+    </header>
 
-        <div id="processStatus" style="text-align: center; color: #d4af37; font-weight: bold;"></div>
-
-        <section>
-            <h3>🍱 已入庫食材預覽</h3>
-            <div class="preview-grid" id="foodLibrary">
+    <main id="app-container" style="display: flex; height: calc(100vh - 60px);">
+        
+        <aside style="width: 250px; background: #1a1e29; padding: 15px; overflow-y: auto; border-right: 1px solid #2d3340;">
+            <h3 style="color: #fff; margin-top: 0; font-size: 1rem;">📦 選擇餐盒</h3>
+            <div id="tpl-list" class="tpl-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 </div>
+        </aside>
+
+        <section style="flex: 1; display: flex; flex-direction: column; position: relative;">
+            <div id="viewport" style="flex: 1; background: #12141c; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative;">
+                <canvas id="renderCanvas" style="width: 100%; height: 100%; touch-action: none;"></canvas>
+            </div>
+            
+            <div style="padding: 12px; background: #1e222d; text-align: center; border-top: 1px solid #2d3340;">
+                <button class="btn" style="background: #4caf50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-right: 10px;">💾 儲存擺盤</button>
+                <button class="btn" style="background: #e85c5c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">🗑️ 清空餐盒</button>
+            </div>
         </section>
-    </div>
+
+        <aside style="width: 300px; background: #1a1e29; padding: 15px; overflow-y: auto; border-left: 1px solid #2d3340;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: #fff; margin: 0; font-size: 1rem;">🥦 食材庫</h3>
+                <button class="btn" style="background: #4f8ef7; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;" onclick="loadDefaultFoods()">📥 恢復預設食材</button>
+            </div>
+            
+            <div id="food-list" class="food-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                </div>
+        </aside>
+    </main>
 
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore-compat.js"></script>
+    
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    
     <script src="js/core/auth.js"></script>
+    <script src="js/bento/main.js"></script>
+
     <script>
-        // 初始化食材庫顯示
-        const foodLib = document.getElementById('foodLibrary');
-        const processStatus = document.getElementById('processStatus');
-
-        // 模擬從 GitHub/Firebase 抓取預載食材
-        function loadCurrentFoods() {
-            foodLib.innerHTML = '';
-            // 這裡會讀取您的 food/ 資料夾，目前先顯示預載 40 道的佔位符
-            for(let i=1; i<=12; i++) {
-                const num = i.toString().padStart(2, '0');
-                const card = document.createElement('div');
-                card.className = 'food-card';
-                card.innerHTML = `
-                    <img src="food/${num}.png" onerror="this.src='https://via.placeholder.com/100?text=No+Img'">
-                    <p>食材 ${num}</p>
-                `;
-                foodLib.appendChild(card);
+        window.checkAuthAndRun = function(callback) {
+            // 確認 Firebase Auth 是否已載入並有使用者登入
+            if (typeof firebase !== 'undefined' && firebase.auth().currentUser) {
+                callback();
+            } else {
+                alert("🔒 此功能僅限會員使用，請先點擊右上角登入！");
             }
-        }
-
-        // 處理檔案上傳與去背 (邏輯草案)
-        document.getElementById('fileInput').addEventListener('change', async (e) => {
-            const files = e.target.files;
-            if(!files.length) return;
-
-            processStatus.innerText = "🚀 正在進行 AI 去背處理中，請稍候...";
-            
-            // 提醒：這裡需要串接 remove.bg API key 才能運作自動去背
-            // 目前先模擬上傳成功的動作
-            setTimeout(() => {
-                processStatus.innerText = "✅ 處理完成！請手動將檔案放入 GitHub food/ 資料夾中。";
-                loadCurrentFoods();
-            }, 2000);
-        });
-
-        window.onload = loadCurrentFoods;
+        };
     </script>
 </body>
 </html>
