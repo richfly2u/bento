@@ -5,7 +5,7 @@
 
 import { BentoGrid } from './bento-grid.js';
 import { IngredientManager } from './ingredient-manager.js';
-import { GeminiAPI } from './gemini-api.js';
+import { OpenAIAPI } from './openai-api.js';
 import { UIComponents } from './ui-components.js';
 import { Storage } from './storage.js';
 import { Utils } from './utils/helpers.js';
@@ -14,7 +14,7 @@ class BentoApp {
     constructor() {
         this.grid = null;
         this.ingredientManager = null;
-        this.geminiAPI = null;
+        this.openaiAPI = null;
         this.uiComponents = null;
         this.storage = null;
         this.utils = null;
@@ -32,8 +32,9 @@ class BentoApp {
         this.storage = new Storage();
         this.utils = new Utils();
         this.uiComponents = new UIComponents();
-        this.geminiAPI = new GeminiAPI(this.storage);
-        this.ingredientManager = new IngredientManager(this.storage, this.geminiAPI);
+        this.openaiAPI = new OpenAIAPI(this.storage);
+        this.openaiAPI.init();
+        this.ingredientManager = new IngredientManager(this.storage, this.openaiAPI);
         this.grid = new BentoGrid(this.ingredientManager, this.uiComponents, this.storage);
         
         // 等待 DOM 載入完成
@@ -151,22 +152,22 @@ class BentoApp {
      * 設定 AI 生成
      */
     setupAIGeneration() {
-        const apiKeyInput = document.getElementById('gemini-api-key');
+        const apiKeyInput = document.getElementById('openai-api-key') || document.getElementById('gemini-api-key');
         const ingredientInput = document.getElementById('ai-ingredient-input');
         const generateBtn = document.getElementById('ai-generate-btn');
         const saveKeyBtn = document.getElementById('save-api-key-btn');
         
-        // 載入已儲存的 API Key
-        const savedApiKey = this.storage.getApiKey();
+        // 載入已儲存的 OpenAI API Key
+        const savedApiKey = localStorage.getItem('openai_api_key') || this.storage.getApiKey();
         if (savedApiKey && apiKeyInput) {
             apiKeyInput.value = savedApiKey;
         }
-        
+
         if (saveKeyBtn && apiKeyInput) {
             saveKeyBtn.addEventListener('click', () => {
                 if (apiKeyInput.value) {
-                    this.storage.setApiKey(apiKeyInput.value);
-                    this.uiComponents.showToast('✅ API Key 已儲存');
+                    this.openaiAPI.setApiKey(apiKeyInput.value);
+                    this.uiComponents.showToast('✅ OpenAI API Key 已儲存');
                 }
             });
         }

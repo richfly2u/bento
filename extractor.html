@@ -41,26 +41,26 @@
 
       <div id="prompt-panel" class="hidden">
         <div class="prompt-card" style="margin-bottom:10px;">
-          <h3>🎨 素食研發提示詞 (Gemini 專用)</h3>
+          <h3>🎨 素食研發提示詞 (gpt-image-2 專用)</h3>
           <div class="prompt-item">
             <div class="p-label">🥦 單一食材 (自動詢問名稱)</div>
-            <div class="p-text" id="pt1">請生成以下素食食材的去背俯視圖：[食材名稱]。食材呈現自然熟食擺盤狀態，背俯視45度角，色彩飽和真實，無陰影，絕對不要包含任何肉類、五辛(蔥蒜韭薤興渠)，不要盤碗襯底。輸出尺寸 512x512px，純白或透明背景。</div>
+            <div class="p-text" id="pt1">Top-down view of cooked vegetarian dish: [食材名稱]. Natural plating at 45-degree overhead angle, vibrant and realistic colors, no shadows, transparent or pure white background, 512x512px. Absolutely no meat, no alliums (garlic, onion, chives, shallot, scallion), no bowl or plate underneath.</div>
             <div class="prompt-btns">
-              <button class="btn-gemini-grad" style="width:100%;" onclick="openGemini('pt1')">✨ 複製並前往 Gemini 生成</button>
+              <button class="btn-gemini-grad" style="width:100%;" onclick="openChatGPT('pt1')">✨ 複製並前往 ChatGPT 生成</button>
             </div>
           </div>
           <div class="prompt-item">
             <div class="p-label">🍱 拼圖大圖 (配合智能網格)</div>
-            <div class="p-text" id="pt2">請生成一張 8 欄 × 5 列的素食食材拼圖大圖，共 40 格，每格一種食材（熟食），食材呈現自然熟食狀態，色彩真實無陰影，絕對不要包含任何五辛(蔥蒜)。背景統一使用洋紅色（#FF00FF），所有食材置中背俯視45度，均勻排列無間隔，整體建議尺寸 2624×1632px。食材種類：[請填入純素食材清單]或請您自行生成。</div>
+            <div class="p-text" id="pt2">Generate a grid image of 8 columns × 5 rows of vegetarian cooked ingredients (40 cells total). Each cell contains one cooked ingredient centered at 45-degree overhead view, realistic colors, no shadows, no garlic or onion. Magenta (#FF00FF) background for all cells, evenly arranged without gaps, recommended size 2624×1632px. Ingredient types: [請填入純素食材清單] or generate freely.</div>
             <div class="prompt-btns">
-              <button class="btn-gemini-grad" style="width:100%;" onclick="openGemini('pt2')">✨ 複製並前往 Gemini 生成大圖</button>
+              <button class="btn-gemini-grad" style="width:100%;" onclick="openChatGPT('pt2')">✨ 複製並前往 ChatGPT 生成大圖</button>
             </div>
           </div>
         </div>
         <div class="prompt-card">
           <h3>🔗 快速入口</h3>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <button class="btn" style="background:#1e222d;border:1px solid #444;" onclick="window.open('https://chat.openai.com','_blank')">🤖 前往 ChatGPT / DALL·E</button>
+            <button class="btn" style="background:#1e222d;border:1px solid #444;" onclick="window.open('https://chatgpt.com','_blank')">🤖 前往 ChatGPT (gpt-image-2)</button>
           </div>
         </div>
       </div>

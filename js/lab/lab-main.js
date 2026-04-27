@@ -742,14 +742,14 @@ window.exportZip = async function(){
 };
 
 // 提示詞相關
-window.openGemini = function(id){
+window.openChatGPT = function(id){
   const btn=event.currentTarget,oldHtml=btn.innerHTML;let text=document.getElementById(id).textContent.trim();
-  if(id==='pt1'||text.includes('[食材名稱]')){customPrompt('🥦 生成食材','想生成什麼素食料理？(不含五辛)','五寶鮮蔬',(name)=>{if(name){text=text.replace(/\[食材名稱\]/g,name);finalizeGeminiAction(text,btn,oldHtml);}});}
-  else finalizeGeminiAction(text,btn,oldHtml);
+  if(id==='pt1'||text.includes('[食材名稱]')){customPrompt('🥦 生成食材','想生成什麼素食料理？(不含五辛)','五寶鮮蔬',(name)=>{if(name){text=text.replace(/\[食材名稱\]/g,name);finalizeChatGPTAction(text,btn,oldHtml);}});}
+  else finalizeChatGPTAction(text,btn,oldHtml);
 };
-function finalizeGeminiAction(text,btn,oldHtml){
+function finalizeChatGPTAction(text,btn,oldHtml){
   navigator.clipboard.writeText(text).then(()=>{
-    btn.innerHTML='✅ 提示詞已複製！準備跳轉...';btn.style.filter='brightness(1.1)';showToast('🚀 提示詞已複製！正在跳轉至 Gemini...');
-    setTimeout(()=>{window.open('https://gemini.google.com','_blank');setTimeout(()=>{btn.innerHTML=oldHtml;btn.style.filter='none';},1000);},500);
+    btn.innerHTML='✅ 提示詞已複製！準備跳轉...';btn.style.filter='brightness(1.1)';showToast('🚀 提示詞已複製！正在跳轉至 ChatGPT (gpt-image-2)...');
+    setTimeout(()=>{window.open('https://chatgpt.com','_blank');setTimeout(()=>{btn.innerHTML=oldHtml;btn.style.filter='none';},1000);},500);
   }).catch(()=>{alert('❌ 複製失敗，請手動複製文字。');});
 }
